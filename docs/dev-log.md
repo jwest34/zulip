@@ -55,3 +55,21 @@
   messages") is in the left-sidebar topic ⋮ popover
   (`left_sidebar_topic_actions_popover.hbs` → `topic_popover.ts` →
   `message_summary.get_narrow_summary`).
+
+## 2026-09-17 — Prompt 03b (inventory, secret-scan, first push to fork)
+
+- **Actions:** Recorded prompt 03b. Confirmed the two local commits ahead of
+  `origin/main` (`a824433`, `b9a750c`) and inventoried them
+  (`git log/diff --stat/status` vs `origin/main`). Ran the three secret scans,
+  attempted `git push origin main`, and wrote
+  `docs/reports/report-03b-push-baseline-2609171740.md`.
+- **Findings:** Secret scans 1 & 2 were literally non-empty, but every match is
+  documentation of the string "gsk_" or a quoted `get_secret()` source line;
+  the precision check `gsk_[A-Za-z0-9]{20,}` matched nothing and
+  `zproject/dev-secrets.conf` is untracked — i.e. **no real key**. With the
+  user confirming the false positives, the push was attempted but **failed on
+  authentication**: `fatal: could not read Username for 'https://github.com'`.
+  No credentials exist (no helper, no `gh`, no SSH key). The user must set up
+  GitHub auth (PAT via credential helper, `gh auth login`, or SSH remote); I did
+  not create tokens or change the remote. `origin/main` remains at
+  `db7ae5fb…`; local `main` is 2 commits ahead.
