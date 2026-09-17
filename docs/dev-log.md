@@ -73,3 +73,14 @@
   GitHub auth (PAT via credential helper, `gh auth login`, or SSH remote); I did
   not create tokens or change the remote. `origin/main` remains at
   `db7ae5fb…`; local `main` is 2 commits ahead.
+
+## 2026-09-17 — Prompt 03b follow-up (SSH configured, push succeeded)
+
+- **Actions:** Switched `origin` to `git@github.com:jwest34/zulip.git`, verified
+  SSH auth (`Hi jwest34! ...`), and re-ran steps 4–5. Push succeeded
+  (`db7ae5fb83..effdc0497b main -> main`). Appended the outcome to
+  `docs/reports/report-03b-push-baseline-2609171740.md` and this log, committed
+  `docs/` locally, and pushed again so the updated report is on the fork.
+- **Findings:** `origin/main` is now `effdc0497b746fbaf77755f689eeaef48785b28e`;
+  `git status -sb` shows `## main...origin/main` (in sync). Baseline commit URL:
+  https://github.com/jwest34/zulip/commit/effdc0497b746fbaf77755f689eeaef48785b28e

@@ -154,3 +154,30 @@ be at `https://github.com/jwest34/zulip/commit/b9a750c6bb9b2998e1e57616efd2e17ea
   configure (PAT via credential helper, `gh auth login`, or SSH remote).
 - This report is committed with `docs/` locally and will go out with the next
   push; no push is performed again in this step.
+
+## Update (2026-09-17) — SSH auth configured; steps 4–5 re-run
+
+SSH authentication to GitHub was configured, so the remote was switched from
+HTTPS to SSH and the push was retried:
+
+- `git remote set-url origin git@github.com:jwest34/zulip.git`
+- `ssh -T git@github.com` → `Hi jwest34! You've successfully authenticated`.
+
+**Step 4 — Push (SUCCEEDED):**
+
+```
+To github.com:jwest34/zulip.git
+   db7ae5fb83..effdc0497b  main -> main
+```
+
+**Step 5 — Verify:**
+
+- `git status -sb` → `## main...origin/main` (in sync; no "ahead" count).
+- `origin/main` hash: `effdc0497b746fbaf77755f689eeaef48785b28e`
+- Commit URL:
+  <https://github.com/jwest34/zulip/commit/effdc0497b746fbaf77755f689eeaef48785b28e>
+
+This pushed all three baseline commits (`a824433`, `b9a750c`, `effdc0497b`) to
+the fork. (A follow-up commit appending this update section is pushed
+immediately after, so the fork's tip advances by one more commit containing this
+text.)
