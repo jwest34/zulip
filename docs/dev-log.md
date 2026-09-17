@@ -34,3 +34,24 @@
   terminal). `run-dev` starts cleanly on `127.0.0.1:9991`; the dev login page
   (Zulip Dev, test users) returns HTTP 200 and `dev_fetch_api_key` returns
   success. Full detail in `docs/reports/report-02-provision-2609162218.md`.
+
+## 2026-09-17 — Prompt 03 (switch to live Groq model, verify LLM path)
+
+- **Actions:** Recorded prompt 03 into `docs/prompts/`. Confirmed the
+  gitignored `zproject/dev-secrets.conf` holds `topic_summarization_api_key`
+  (without displaying it). Made `TOPIC_SUMMARIZATION_MODEL` /
+  `TOPIC_SUMMARIZATION_API_BASE` overridable via `get_secret` in
+  `zproject/dev_settings.py` (defaults `openai/gpt-oss-120b` and Groq's base
+  URL) and set `TOPIC_SUMMARIZATION_PARAMETERS = {"reasoning_effort": "low"}`.
+  Restarted `run-dev`, verified the live summary endpoint as iago, ran the
+  backend test, and committed. Detail in
+  `docs/reports/report-03-llm-verify-2609171633.md`.
+- **Findings:** Live summary of Denmark / "green server has been running"
+  (6 msgs) returned HTTP 200 in ~1.44 s with a real Groq `openai/gpt-oss-120b`
+  completion. `./tools/test-backend zerver.tests.test_message_summary` passed
+  (2 tests). One operational snag: a leftover `webpack` held port 9994 after
+  the restart, so `run-dev` self-terminated; fixed by clearing stale processes
+  and relaunching via `setsid`. The Summarize button ("Summarize recent
+  messages") is in the left-sidebar topic ⋮ popover
+  (`left_sidebar_topic_actions_popover.hbs` → `topic_popover.ts` →
+  `message_summary.get_narrow_summary`).

@@ -2,6 +2,7 @@ import os
 import pwd
 
 from scripts.lib.zulip_tools import deport
+from zproject.config import get_secret
 from zproject.settings_types import SCIMConfigDict
 
 ZULIP_ADMINISTRATOR = "desdemona+admin@zulip.com"
@@ -232,8 +233,15 @@ DEMO_ORG_DEADLINE_DAYS = 30
 if external_host_env is None and not IS_DEV_DROPLET:
     USING_CAPTCHA = True
 
-TOPIC_SUMMARIZATION_MODEL = "llama-3.3-70b-versatile"
-TOPIC_SUMMARIZATION_API_BASE = "https://api.groq.com/openai/v1"
+# A grader can point the server at any OpenAI-compatible provider by
+# setting topic_summarization_api_key, topic_summarization_model, and
+# topic_summarization_api_base in zproject/dev-secrets.conf; the defaults
+# below use Groq's OpenAI-compatible API.
+TOPIC_SUMMARIZATION_MODEL = get_secret("topic_summarization_model", "openai/gpt-oss-120b")
+TOPIC_SUMMARIZATION_API_BASE = get_secret(
+    "topic_summarization_api_base", "https://api.groq.com/openai/v1"
+)
+TOPIC_SUMMARIZATION_PARAMETERS = {"reasoning_effort": "low"}
 # Defaults based on groq's pricing for Llama 3.3 70B Versatile 128k.
 # https://groq.com/pricing/
 OUTPUT_COST_PER_GIGATOKEN = 590
